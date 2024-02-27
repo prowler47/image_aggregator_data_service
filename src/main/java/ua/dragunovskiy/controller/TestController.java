@@ -23,4 +23,10 @@ public class TestController {
         mongoService.insertObject();
         return "Success";
     }
+
+    @GetMapping("/find")
+    public String findUrls() {
+        mongoService.downloadImagesByUrls();
+        return "Success";
+    }
 }
