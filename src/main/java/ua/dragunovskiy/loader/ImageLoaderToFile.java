@@ -11,10 +11,12 @@ import java.util.List;
 
 @Service
 public class ImageLoaderToFile implements ImageLoader {
+
+    // this method download binary data as file in format png, jpg and gif
+    // to local directory
     @Override
-    public int download(List<String> imageURLs, String key) {
+    public void download(List<String> imageURLs, String key, String directory) {
         String suffix = "";
-        int imageCount = 0;
         for (String imageURL : imageURLs) {
             try {
                 URL url = new URL(imageURL);
@@ -37,11 +39,10 @@ public class ImageLoaderToFile implements ImageLoader {
                 if (imageURL.endsWith(".gif")) {
                     suffix = ".gif";
                 }
-                Path path = Paths.get("/Users/mac/Documents/tmp/" + key);
+                Path path = Paths.get(directory + key);
                 Files.createDirectories(path);
 
                 File file = File.createTempFile(imageURL, suffix, new File(path.toString()));
-                imageCount++;
                 FileOutputStream fileOutputStream = new FileOutputStream(file);
                 fileOutputStream.write(buffer.toByteArray());
                 fileOutputStream.close();
@@ -50,6 +51,5 @@ public class ImageLoaderToFile implements ImageLoader {
                 System.err.println("Error: " + e.getMessage());
             }
         }
-        return imageCount;
     }
 }

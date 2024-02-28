@@ -6,5 +6,5 @@ import java.util.List;
 
 @Service
 public interface ImageLoader {
-    int download(List<String> urlsList, String key);
+    void download(List<String> urlsList, String key, String directory);
 }

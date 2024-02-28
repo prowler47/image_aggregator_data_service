@@ -8,25 +8,19 @@ import ua.dragunovskiy.service.MongoService;
 
 @RestController
 @RequestMapping("/")
-public class TestController {
+public class MongoController {
     @Autowired
     private MongoService mongoService;
-
-    @GetMapping("/insert")
-    public String test() {
-        mongoService.insert();
-        return "Success";
-    }
 
     @GetMapping("/insertObject")
     public String testForObject() {
         mongoService.insertObject();
-        return "Success";
+        return "Insert object is success";
     }
 
-    @GetMapping("/find")
+    @GetMapping("/download")
     public String findUrls() {
         mongoService.downloadImagesByUrls();
-        return "Success";
+        return "Download images is success";
     }
 }
