@@ -23,17 +23,22 @@ public class MongoService {
     @Autowired
     private ImageLoader imageLoader;
 
+    @Autowired
+    private RabbitMqService rabbitMqService;
+
     private final String mongoURI = "mongodb+srv://sdragunovskiy:Sdragunovskiy123@cluster0.3j4xorl.mongodb.net/?retryWrites=true&w=majority";
-    private String directory = "/Users/mac/Documents/tmp/";
+//    private String directory = "/Users/mac/Documents/tmp/";
 
     // insert list of parsing urls from RabbitMQ queue to MongoDB collection
     public void insertUrls(List<String> urls) {
         MongoClient mongoClient = MongoClients.create(mongoURI);
         MongoDatabase database = mongoClient.getDatabase("URLs_database");
-        MongoCollection<Document> collection = database.getCollection("Freepik");
+        MongoCollection<Document> userDataCollection = database.getCollection("User_data");
+        MongoCollection<Document> userDataHistoryCollection = database.getCollection("User_data_history");
         for (String url : urls) {
             Document document = new Document("", url);
-            collection.insertOne(document);
+            userDataCollection.insertOne(document);
+            userDataHistoryCollection.insertOne(document);
         }
     }
 
@@ -43,7 +48,7 @@ public class MongoService {
         int count = 0;
         MongoClient mongoClient = MongoClients.create(mongoURI);
         MongoDatabase database = mongoClient.getDatabase("URLs_database");
-        MongoCollection<Document> collection = database.getCollection("Freepik");
+        MongoCollection<Document> collection = database.getCollection("User_data");
         List<Document> urlsList = collection.find().into(new ArrayList<>());
         List<String> urlsStringList = new ArrayList<>();
         for (Document document : urlsList) {
@@ -52,10 +57,12 @@ public class MongoService {
             String url = doc.substring(startIndex);
             url = url.replace("}", "");
             urlsStringList.add(url);
-            System.out.println(url);
+//            System.out.println(url);
             count++;
         }
-        imageLoader.download(urlsStringList, "", directory);
+        imageLoader.download(urlsStringList, "", rabbitMqService.getDirectory());
+        Document filter = new Document();
+        collection.deleteMany(filter);
         System.out.println(count);
     }
 
