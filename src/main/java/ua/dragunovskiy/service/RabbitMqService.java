@@ -16,6 +16,8 @@ public class RabbitMqService {
 
     private String directory;
 
+    private String key;
+
     // this method listening RabbitMQ queue "Test" and read
     // appears messages, then put it into list and after
     // insertUrls(..) inserting this list to MongoDb collection
@@ -31,4 +33,10 @@ public class RabbitMqService {
     public void getDirectory(String message) {
         directory = message;
     }
+
+    @RabbitListener(queues = "Key")
+    public void getKey(String message) {
+        key = message;
+    }
+
 }

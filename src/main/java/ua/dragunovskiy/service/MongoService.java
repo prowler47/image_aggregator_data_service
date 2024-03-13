@@ -56,7 +56,7 @@ public class MongoService {
             url = url.replace("}", "");
             urlsStringList.add(url);
         }
-        imageLoader.download(urlsStringList, "", rabbitMqService.getDirectory());
+        imageLoader.download(urlsStringList, rabbitMqService.getKey(), rabbitMqService.getDirectory());
         Document filter = new Document();
         collection.deleteMany(filter);
     }
