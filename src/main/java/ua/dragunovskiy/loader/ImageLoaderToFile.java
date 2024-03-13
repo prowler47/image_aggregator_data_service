@@ -39,7 +39,7 @@ public class ImageLoaderToFile implements ImageLoader {
                 if (imageURL.endsWith(".gif")) {
                     suffix = ".gif";
                 }
-                Path path = Paths.get(directory + key);
+                Path path = Paths.get(directory + "/" + key);
                 Files.createDirectories(path);
 
                 File file = File.createTempFile(imageURL, suffix, new File(path.toString()));

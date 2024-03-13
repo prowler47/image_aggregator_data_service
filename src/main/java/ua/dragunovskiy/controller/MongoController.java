@@ -14,7 +14,7 @@ public class MongoController {
 
     @GetMapping("/insertObject")
     public String testForObject() {
-        mongoService.insertObject();
+//        mongoService.insertObject();
         return "Insert object is success";
     }
 
